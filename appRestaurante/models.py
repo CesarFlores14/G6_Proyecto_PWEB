@@ -38,12 +38,11 @@ class Pedido(models.Model):
         db_table = 'pedido'
 
 class DetallePedido(models.Model):
-    # Removemos el id automático y definimos clave primaria compuesta
+    id_detalle = models.AutoField(primary_key=True)
     id_plato = models.ForeignKey(
         Plato,
         on_delete=models.CASCADE,
-        db_column='id_plato',
-        primary_key=True  # Parte de la clave primaria compuesta
+        db_column='id_plato'
     )
     id_pedido = models.ForeignKey(
         Pedido,

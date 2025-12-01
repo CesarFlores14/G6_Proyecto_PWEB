@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Seleccionar Platos - Pedido #{{ pedido.id_pedido }}</h1>
+
+<div>
+    <p><strong>Cliente:</strong> {{ pedido.cliente }}</p>
+    <p><strong>Mesa:</strong> {{ pedido.id_mesa.id_mesa }}</p>
+</div>
+
+<form method="post">
+    {% csrf_token %}
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Seleccionar</th>
+                <th>Plato</th>
+                <th>Descripción</th>
+                <th>Categoría</th>
+                <th>Precio</th>
+                <th>Cantidad</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for plato in platos %}
+            <tr>
+                <td><input type="checkbox" name="platos" value="{{ plato.id_plato }}"></td>
+                <td>{{ plato.id_plato }}</td>
+                <td>{{ plato.descripcion }}</td>
+                <td>{{ plato.categoria }}</td>
+                <td>S/ {{ plato.precio }}</td>
+                <td><input type="number" name="cantidades" value="1" min="1" max="10"></td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6">No hay platos disponibles</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
+    <div>
+        <button type="submit">Finalizar Pedido</button>
+        <a href="{% url 'listar_pedidos' %}">Cancelar</a>
+    </div>
+</form>
+{% endblock %}

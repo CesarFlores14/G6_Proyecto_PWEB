@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Tomar Pedido por Mesa</h1>
+
+{% if error %}
+<div style="color: red;">{{ error }}</div>
+{% endif %}
+
+<form method="post">
+    {% csrf_token %}
+    <div>
+        <label for="id_id_mesa">Seleccionar Mesa:</label>
+        {{ form.id_mesa }}
+    </div>
+    <div>
+        <label for="id_cliente">Nombre del Cliente:</label>
+        {{ form.cliente }}
+    </div>
+    <div>
+        <label for="id_notas">Notas Especiales:</label>
+        {{ form.notas }}
+    </div>
+    <div>
+        <button type="submit">Continuar a Seleccionar Platos</button>
+        <a href="{% url 'listar_pedidos' %}">Cancelar</a>
+    </div>
+</form>
+{% endblock %}

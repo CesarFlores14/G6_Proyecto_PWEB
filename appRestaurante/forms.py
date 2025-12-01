@@ -23,3 +23,22 @@ class DetallePedidoForm(forms.Form):
     id_pedido = forms.IntegerField(label="ID Pedido", required=True)
     cantidad = forms.IntegerField(label="Cantidad", required=True)
     subtotal = forms.DecimalField(label="Subtotal", max_digits=10, decimal_places=2, required=True)
+    
+    
+class PedidoMesaForm(forms.Form):
+    id_mesa = forms.IntegerField(
+        label="Mesa",
+        required=True,
+        widget=forms.NumberInput(attrs={'class': 'form-control'})
+    )
+    cliente = forms.CharField(
+        label="Cliente",
+        max_length=150,
+        required=True,
+        widget=forms.TextInput(attrs={'class': 'form-control'})
+    )
+    notas = forms.CharField(
+        label="Notas del Pedido",
+        required=False,
+        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 3})
+    )
