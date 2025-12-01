@@ -5,7 +5,7 @@ from django.db import transaction
 from datetime import date, time
 from django.db.models import Sum, Count
 from decimal import Decimal
-from datetime import datetime
+from datetime import date, datetime
 from django.utils import timezone
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
@@ -287,35 +287,32 @@ def index(request):
 # FUNCIONALIDAD 1: TOMAR PEDIDOS POR MESA
 from django.db import connection
 @operador_required
+@operador_required
 def tomar_pedido_mesa(request):
     if request.method == 'POST':
         form = PedidoMesaForm(request.POST)
         if form.is_valid():
             try:
                 with transaction.atomic():
-                    mesa = get_object_or_404(Mesa, id_mesa=form.cleaned_data['id_mesa'])
+                    # Obtener la mesa seleccionada (ahora es string del choice)
+                    id_mesa = int(form.cleaned_data['id_mesa'])
+                    mesa = get_object_or_404(Mesa, id_mesa=id_mesa)
                     
-                    # INSERT DIRECTO EN SQL
-                    with connection.cursor() as cursor:
-                        cursor.execute("""
-                            INSERT INTO pedido (estadoped, cliente, fecha, hora, notas, id_mesa) 
-                            VALUES (%s, %s, %s, %s, %s, %s)
-                        """, [
-                            'Preparando',
-                            form.cleaned_data['cliente'],
-                            date.today(),
-                            timezone.now().time(),
-                            form.cleaned_data['notas'],
-                            mesa.id_mesa
-                        ])
-                        
-                        # Obtener el ID del pedido recién insertado
-                        cursor.execute("SELECT LAST_INSERT_ID()")
-                        id_pedido = cursor.fetchone()[0]
+                    # Crear el pedido
+                    pedido = Pedido.objects.create(
+                        estadoped='Preparando',
+                        cliente=form.cleaned_data['cliente'],
+                        fecha=date.today(),
+                        hora=datetime.now().time(),  # Corregido el error de tiempo
+                        notas=form.cleaned_data['notas'],
+                        id_mesa=mesa
+                    )
                     
+                    # Actualizar estado de la mesa a "Ocupada"
                     mesa.estado = 'Ocupada'
                     mesa.save()
-                    return redirect('seleccionar_platos', id_pedido=id_pedido)
+                    
+                    return redirect('seleccionar_platos', id_pedido=pedido.id_pedido)
                     
             except Exception as e:
                 return render(request, 'tomar_pedido.html', {
@@ -323,7 +320,7 @@ def tomar_pedido_mesa(request):
                     'error': f'Error al crear el pedido: {str(e)}'
                 })
     else:
-        form = PedidoMesaForm()
+        form = PedidoMesaForm()  # Se inicializa con las mesas disponibles
     
     return render(request, 'tomar_pedido.html', {'form': form})
 

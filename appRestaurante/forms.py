@@ -45,10 +45,10 @@ class DetallePedidoForm(forms.Form):
     
     
 class PedidoMesaForm(forms.Form):
-    id_mesa = forms.IntegerField(
-        label="Mesa",
+    id_mesa = forms.ChoiceField(
+        label="Seleccionar Mesa",
         required=True,
-        widget=forms.NumberInput(attrs={'class': 'form-control'})
+        widget=forms.Select(attrs={'class': 'form-control'})
     )
     cliente = forms.CharField(
         label="Cliente",
@@ -61,3 +61,11 @@ class PedidoMesaForm(forms.Form):
         required=False,
         widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 3})
     )
+    
+    def __init__(self, *args, **kwargs):
+        super(PedidoMesaForm, self).__init__(*args, **kwargs)
+        # Obtener mesas disponibles para el dropdown
+        from .models import Mesa
+        mesas_disponibles = Mesa.objects.filter(estado='Disponible')
+        choices = [(mesa.id_mesa, f"Mesa {mesa.id_mesa} - {mesa.ubicacion}") for mesa in mesas_disponibles]
+        self.fields['id_mesa'].choices = [('', '-- Seleccione una mesa --')] + choices
