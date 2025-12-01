@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema Restaurante</title>
+</head>
+<body>
+    <header>
+        <h1>Sistema Restaurante</h1>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="{% url 'tomar_pedido' %}">Tomar Pedido</a></li>
+
+            <li><a href="{% url 'listar_pedidos' %}">Ver Pedidos</a></li>
+            <li><a href="{% url 'listar_detalles_pedido' %}">Detalles Pedidos</a></li>
+
+            <li><a href="{% url 'listar_platos' %}">Gestión de Platos</a></li>
+            <li><a href="{% url 'listar_mesas' %}">Gestión de Mesas</a></li>
+            <li><a href="{% url 'reporte_ventas' %}">Reporte Ventas</a></li>
+
+        </ul>
+    </nav>
+
+    <main>
+        {% block content %}
+        
+        {% endblock %}
+    </main>
+</body>
+</html>

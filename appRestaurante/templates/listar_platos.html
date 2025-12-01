@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Lista de Platos</h1>
+
+{% if request.session.tipo_usuario == 'admin' %}
+<p><a href="{% url 'crear_plato' %}">Nuevo Plato</a></p>
+{% endif %}
+
+<table border="1">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Descripción</th>
+            <th>Precio</th>
+            <th>Categoría</th>
+            <th>Disponible</th>
+            {% if request.session.tipo_usuario == 'admin' %}
+            <th>Acciones</th>
+            {% endif %}
+        </tr>
+    </thead>
+    <tbody>
+        {% for plato in platos %}
+        <tr>
+            <td>{{ plato.id_plato }}</td>
+            <td>{{ plato.descripcion }}</td>
+            <td>S/ {{ plato.precio }}</td>
+            <td>{{ plato.categoria }}</td>
+            <td>{% if plato.disponible %}Sí{% else %}No{% endif %}</td>
+            {% if request.session.tipo_usuario == 'admin' %}
+            <td>
+                <a href="{% url 'actualizar_plato' plato.id_plato %}">Modificar</a>
+                <a href="{% url 'eliminar_plato' plato.id_plato %}" onclick="return confirm('¿Eliminar plato?')">Eliminar</a>
+            </td>
+            {% endif %}
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="{% if request.session.tipo_usuario == 'admin' %}6{% else %}5{% endif %}">No hay platos registrados</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

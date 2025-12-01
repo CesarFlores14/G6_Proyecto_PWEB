@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Detalles de Pedidos</h1>
+
+<table border="1">
+    <thead>
+        <tr>
+            <th>ID Plato</th>
+            <th>Descripción Plato</th>
+            <th>ID Pedido</th>
+            <th>Cliente</th>
+            <th>Cantidad</th>
+            <th>Subtotal</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for detalle in detalles %}
+        <tr>
+            <td>{{ detalle.id_plato.id_plato }}</td>
+            <td>{{ detalle.id_plato.descripcion }}</td>
+            <td>{{ detalle.id_pedido.id_pedido }}</td>
+            <td>{{ detalle.id_pedido.cliente }}</td>
+            <td>{{ detalle.cantidad }}</td>
+            <td>S/ {{ detalle.subtotal }}</td>
+            <td>
+                <a href="{% url 'eliminar_detalle_pedido' detalle.id_plato.id_plato detalle.id_pedido.id_pedido %}" onclick="return confirm('¿Eliminar detalle?')">Eliminar</a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="7">No hay detalles de pedidos registrados</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

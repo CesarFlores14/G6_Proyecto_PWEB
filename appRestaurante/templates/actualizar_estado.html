@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Actualizar Estado del Pedido #{{ pedido.id_pedido }}</h1>
+
+<div>
+    <p><strong>Cliente:</strong> {{ pedido.cliente }}</p>
+    <p><strong>Mesa:</strong> {{ pedido.id_mesa.id_mesa }}</p>
+    <p><strong>Estado Actual:</strong> {{ pedido.estadoped }}</p>
+</div>
+
+<form method="post">
+    {% csrf_token %}
+    <div>
+        <label for="nuevo_estado">Nuevo Estado:</label>
+        <select name="nuevo_estado" id="nuevo_estado" required>
+            <option value="Preparando" {% if pedido.estadoped == 'Preparando' %}selected{% endif %}>Preparando</option>
+            <option value="Entregado" {% if pedido.estadoped == 'Entregado' %}selected{% endif %}>Entregado</option>
+            <option value="Cancelado" {% if pedido.estadoped == 'Cancelado' %}selected{% endif %}>Cancelado</option>
+        </select>
+    </div>
+    
+    <div>
+        <button type="submit">Actualizar Estado</button>
+        <a href="{% url 'listar_pedidos' %}">Cancelar</a>
+    </div>
+</form>
+{% endblock %}

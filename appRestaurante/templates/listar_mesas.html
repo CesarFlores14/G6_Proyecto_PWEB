@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Lista de Mesas</h1>
+
+{% if request.session.tipo_usuario == 'admin' %}
+<p><a href="{% url 'crear_mesa' %}">Nueva Mesa</a></p>
+{% endif %}
+
+<table border="1">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Estado</th>
+            <th>Ubicación</th>
+            {% if request.session.tipo_usuario == 'admin' %}
+            <th>Acciones</th>
+            {% endif %}
+        </tr>
+    </thead>
+    <tbody>
+        {% for mesa in mesas %}
+        <tr>
+            <td>{{ mesa.id_mesa }}</td>
+            <td>{{ mesa.estado }}</td>
+            <td>{{ mesa.ubicacion }}</td>
+            {% if request.session.tipo_usuario == 'admin' %}
+            <td>
+                <a href="{% url 'actualizar_mesa' mesa.id_mesa %}">Modificar</a>
+                <a href="{% url 'eliminar_mesa' mesa.id_mesa %}" onclick="return confirm('¿Eliminar mesa?')">Eliminar</a>
+            </td>
+            {% endif %}
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="{% if request.session.tipo_usuario == 'admin' %}4{% else %}3{% endif %}">No hay mesas registradas</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

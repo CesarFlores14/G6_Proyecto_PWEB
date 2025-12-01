@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Bienvenido al Sistema Restaurante</h1>
+<hr>
+
+<h2>Acciones Rápidas</h2>
+
+<div>
+    <h3><a href="{% url 'tomar_pedido' %}">Tomar Pedido</a></h3>
+    <p>Registrar nuevo pedido por mesa</p>
+</div>
+
+<div>
+    <h3><a href="{% url 'listar_pedidos' %}">Ver Pedidos</a></h3>
+    <p>Consultar lista de pedidos</p>
+</div>
+
+<div>
+    <h3><a href="{% url 'listar_platos' %}">Gestión de Platos</a></h3>
+    <p>Administrar menú del restaurante</p>
+</div>
+
+<div>
+    <h3><a href="{% url 'listar_mesas' %}">Gestión de Mesas</a></h3>
+    <p>Control de mesas y ubicaciones</p>
+</div>
+
+<div>
+    <h3><a href="{% url 'reporte_ventas' %}">Reporte de Ventas</a></h3>
+    <p>Estadísticas y análisis de ventas</p>
+</div>
+{% endblock %}
