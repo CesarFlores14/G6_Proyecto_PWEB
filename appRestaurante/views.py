@@ -287,7 +287,6 @@ def index(request):
 # FUNCIONALIDAD 1: TOMAR PEDIDOS POR MESA
 from django.db import connection
 @operador_required
-@operador_required
 def tomar_pedido_mesa(request):
     if request.method == 'POST':
         form = PedidoMesaForm(request.POST)
